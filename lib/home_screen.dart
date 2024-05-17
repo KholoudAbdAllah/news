@@ -3,6 +3,7 @@ import 'package:news/app_theme.dart';
 import 'package:news/category/category_detials.dart';
 import 'package:news/category/category_grid.dart';
 import 'package:news/category/category_model.dart';
+import 'package:news/category/news_search.dart';
 import 'package:news/drawer/home_drawer.dart';
 import 'package:news/settings/settings_tab.dart';
 
@@ -29,21 +30,52 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       child: Scaffold(
-        drawer: HomeDrawer(onDrawerItemSelected),
+        drawer: HomeDrawer(
+          onDrawerItemSelected,
+          onsideMenuItem: (int newSelectedMenuItem) {},
+        ),
         appBar: AppBar(
-          title: Text(
-            selectedCategory != null
-                ? selectedCategory!.title
-                : selectedDrawerItem == DrawerItem.settings
-                    ? 'Settings'
-                    : 'News App',
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  showSearch(
+                    context: context,
+                    delegate: NewsSearch(),
+                  );
+                });
+              },
+              icon: const Icon(Icons.search),
+            ),
+          ],
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    selectedDrawerItem == DrawerItem.settings
+                        ? 'Settings'
+                        : selectedCategory != null
+                            ? selectedCategory!.title
+                            : 'News App',
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-        body: selectedCategory != null
-            ? CategoryDetials(selectedCategory!.id)
-            : selectedDrawerItem == DrawerItem.settings
-                ? SettingsTab()
-                : CategoryGrid(onCategorySelected: onCategorySelected),
+        body: _buildBody(),
+        // selectedCategory != null
+        //     ? CategoryDetials(selectedCategory!.id, category: null,)
+        //     : selectedDrawerItem == DrawerItem.settings
+        //         ? const SettingsTab()
+        //         : CategoryGrid(onCategorySelected: onCategorySelected),
       ),
     );
   }
@@ -52,21 +84,28 @@ class _HomeScreenState extends State<HomeScreen> {
   CategoryModel? selectedCategory;
 
   void onDrawerItemSelected(DrawerItem selectedItem) {
-    selectedDrawerItem = selectedItem;
     if (selectedItem == DrawerItem.categories) {
-      selectedDrawerItem = selectedItem;
-      //   print('categories selected');
-      // } else {
-      //   print('settings selected');
-      // }
       selectedCategory = null;
-      setState(() {});
-      Navigator.of(context).pop();
+    } else if (selectedItem == DrawerItem.settings) {
+      selectedCategory = null;
+      selectedDrawerItem = DrawerItem.settings;
     }
+    setState(() {});
+    Navigator.of(context).pop();
   }
 
   void onCategorySelected(CategoryModel category) {
     selectedCategory = category;
     setState(() {});
+  }
+
+  Widget _buildBody() {
+    if (selectedDrawerItem == DrawerItem.settings) {
+      return const SettingsTab();
+    } else if (selectedCategory != null) {
+      return CategoryDetials(selectedCategory!.id, category: null);
+    } else {
+      return CategoryGrid(onCategorySelected: onCategorySelected);
+    }
   }
 }
