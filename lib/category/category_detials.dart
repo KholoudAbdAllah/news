@@ -5,7 +5,8 @@ import 'package:news/widgets/error_indicator.dart';
 import 'package:news/widgets/loading_indicator.dart';
 
 class CategoryDetials extends StatelessWidget {
-  const CategoryDetials(this.categoryId, {super.key});
+  const CategoryDetials(this.categoryId, {super.key, required category});
+  //const CategoryDetials(this.categoryId, {super.key});
   final String categoryId;
 
   @override

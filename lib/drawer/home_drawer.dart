@@ -6,7 +6,11 @@ class HomeDrawer extends StatelessWidget {
   // static const int settingsIndex = 1;
   final void Function(DrawerItem) onItemSelected;
 
-  const HomeDrawer(this.onItemSelected, {super.key});
+  static Object settings;
+
+  static int categories;
+
+  const HomeDrawer(this.onItemSelected, {super.key, required void Function(int newSelectedMenuItem) onsideMenuItem});
 
   @override
   Widget build(BuildContext context) {
@@ -28,47 +32,47 @@ class HomeDrawer extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsetsDirectional.only(start: 12),
-              color: AppTheme.whiteColor,
-              child: Column(
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+            child: InkWell(
+              onTap: () {
+                onItemSelected(DrawerItem.categories);
+              },
+              child: Row(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      onItemSelected(DrawerItem.categories);
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(Icons.menu),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          'Categories',
-                          style: textTheme.bodyLarge
-                              ?.copyWith(color: Colors.black),
-                        ),
-                      ],
-                    ),
+                  const Icon(
+                    Icons.menu,
+                    size: 30,
                   ),
-                  InkWell(
-                    onTap: () {
-                      onItemSelected(DrawerItem.settings);
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(Icons.settings),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          'Settings',
-                          style: textTheme.bodyLarge
-                              ?.copyWith(color: Colors.black),
-                        ),
-                      ],
-                    ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    'Categories',
+                    style: textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+            child: InkWell(
+              onTap: () {
+                onItemSelected(DrawerItem.settings);
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.settings),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    'Settings',
+                    style: textTheme.bodyLarge?.copyWith(color: Colors.black),
                   ),
                 ],
               ),

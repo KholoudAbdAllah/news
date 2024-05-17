@@ -10,10 +10,6 @@ class SettingsTab extends StatefulWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
-  List<Language> languages = [
-    Language(name: 'English', code: 'en'),
-    Language(name: 'Arabic', code: 'ar')
-  ];
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -45,53 +41,8 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
             ],
           ),
-          Row(
-            children: [
-              Text(
-                'Language',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontWeight: FontWeight.w600),
-              ),
-              Expanded(
-                child: DropdownButton<Language>(
-                    value: languages.firstWhere(
-                        (lang) => lang.code == settingsProvider.languageCode),
-                    items: languages
-                        .map(
-                          (language) => DropdownMenuItem(
-                            value: language,
-                            child: Text(
-                              language.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (selectedLanguage) {
-                      if (selectedLanguage != null) {
-                        settingsProvider.changeLanguage(selectedLanguage.code);
-                      }
-                    }),
-              ),
-            ],
-          ),
         ],
       ),
     );
   }
-}
-
-// ignore: camel_case_types
-class Language {
-  String name;
-  String code;
-  Language({
-    required this.name,
-    required this.code,
-  });
 }

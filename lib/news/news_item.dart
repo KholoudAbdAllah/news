@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:news/app_theme.dart';
+import 'package:news/models/news_response/news_response.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+// ignore: must_be_immutable
 class NewsItem extends StatelessWidget {
-  const NewsItem(this.news, {super.key});
+  News news;
+
+  NewsItem({super.key, required this.news});
+
+  //DateFormat dateFormat = DateFormat('dd-MM-yyyy (HH:mm)');
+
   // ignore: prefer_typing_uninitialized_variables
-  final news;
+
   @override
   Widget build(BuildContext context) {
     //final titlesmall = Theme.of(context).textTheme.titleSmall;
@@ -45,7 +52,7 @@ class NewsItem extends StatelessWidget {
           Align(
             alignment: AlignmentDirectional.centerEnd,
             child: Text(
-              timeago.format(news.publishedAt!),
+              timeago.format(news.publishedAt! as DateTime),
               style: Theme.of(context)
                   .textTheme
                   .titleSmall
